@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React from 'react'
 
 import type { StoryUser } from '@/types/StoryUser'
@@ -9,7 +10,7 @@ type StoryProps = {
 const Story: React.FC<StoryProps> = ({ storyUser }) => {
   return (
     <div>
-      <img src={storyUser.img} alt={storyUser.username} />
+      <img className="h-14" src={storyUser.img} alt={storyUser.username} />
       <p>{storyUser.username}</p>
     </div>
   )

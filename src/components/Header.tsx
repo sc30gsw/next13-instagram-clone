@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { HomeIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid'
 import { PlusCircleIcon } from '@heroicons/react/24/outline'
 import Image from 'next/image'
