@@ -1,5 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
-import { EllipsisHorizontalIcon } from '@heroicons/react/24/outline'
+
+import {
+  BookmarkIcon,
+  ChatBubbleOvalLeftIcon,
+  EllipsisHorizontalIcon,
+  HeartIcon,
+} from '@heroicons/react/24/outline'
 import React from 'react'
 
 import { Post } from '@/types/Post'
@@ -23,6 +29,15 @@ const Post: React.FC<PostProps> = ({ post }) => {
       </div>
       {/* PostImage */}
       <img className="object-cover w-full" src={post.img} alt={post.caption} />
+
+      {/* PostButtons */}
+      <div className="flex justify-between px-4 pt-4">
+        <div className="flex space-x-4">
+          <HeartIcon className="btn" />
+          <ChatBubbleOvalLeftIcon className="btn" />
+        </div>
+        <BookmarkIcon className="btn" />
+      </div>
     </div>
   )
 }
