@@ -6,13 +6,13 @@ import Stories from '@/components/Stories'
 const Feed = () => {
   return (
     <>
-      <section>
+      <section className="md:col-span-2">
         {/* Stories */}
         <Stories />
         {/* Posts */}
         <Posts />
       </section>
-      <section>
+      <section className="hidden md:inline-grid md:col-span-1">
         {/* Mini Profile */}
         {/* Suggestions */}
       </section>
