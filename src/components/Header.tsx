@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import { HomeIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid'
 import { PlusCircleIcon } from '@heroicons/react/24/outline'
 import Image from 'next/image'
@@ -42,6 +41,7 @@ const Header = () => {
         <div className="flex space-x-4 items-center">
           <HomeIcon className="hidden md:inline-flex h-6 cursor-pointer hover:scale-125 transition-transform duration-200 ease-out" />
           <PlusCircleIcon className="h-6 cursor-pointer hover:scale-125 transition-transform duration-200 ease-out" />
+          {/*eslint-disable-next-line @next/next/no-img-element*/}
           <img
             src="https://static.skillshare.com/uploads/users/350301760/user-image-large.jpg?753816048"
             alt="user-image"
