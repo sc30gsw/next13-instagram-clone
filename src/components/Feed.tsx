@@ -1,5 +1,6 @@
 import React from 'react'
 
+import MiniProfile from '@/components/MiniProfile'
 import Posts from '@/components/Posts'
 import Stories from '@/components/Stories'
 
@@ -13,8 +14,11 @@ const Feed = () => {
         <Posts />
       </section>
       <section className="hidden md:inline-grid md:col-span-1">
-        {/* Mini Profile */}
-        {/* Suggestions */}
+        <div className="fixed w-[380px]">
+          {/* MiniProfile */}
+          <MiniProfile />
+          {/* Suggestions */}
+        </div>
       </section>
     </>
   )
