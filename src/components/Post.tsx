@@ -4,6 +4,7 @@ import {
   BookmarkIcon,
   ChatBubbleOvalLeftIcon,
   EllipsisHorizontalIcon,
+  FaceSmileIcon,
   HeartIcon,
 } from '@heroicons/react/24/outline'
 import React from 'react'
@@ -38,6 +39,23 @@ const Post: React.FC<PostProps> = ({ post }) => {
         </div>
         <BookmarkIcon className="btn" />
       </div>
+
+      {/* PostComments */}
+      <p className="p-5 truncate">
+        <span className="font-bold mr-2">{post.username}</span>
+        {post.caption}
+      </p>
+
+      {/* PostInputBox */}
+      <form className="flex items-center p-4">
+        <FaceSmileIcon className="h-7" />
+        <input
+          className="border-none flex-1 focus:ring-0"
+          type="text"
+          placeholder="Enter your comment..."
+        />
+        <button className="text-blue-400 font-bold">Post</button>
+      </form>
     </div>
   )
 }
