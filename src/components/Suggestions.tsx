@@ -25,7 +25,7 @@ const Suggestions = () => {
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            className="h-10 rounded-full border p-[20px]"
+            className="h-10 rounded-full border p-[2px]"
             src={`https://i.pravatar.cc/150?img=${Math.ceil(
               Math.random() * 70,
             )}`}
