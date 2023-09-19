@@ -1,9 +1,14 @@
-import { HomeIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid'
-import { PlusCircleIcon } from '@heroicons/react/24/outline'
+import { MagnifyingGlassIcon } from '@heroicons/react/20/solid'
 import Image from 'next/image'
-import React from 'react'
+import { getServerSession } from 'next-auth'
+import React, { Suspense } from 'react'
 
-const Header = () => {
+import HeaderRight from '@/components/HeaderRight'
+import options from '@/libs/options'
+
+const Header = async () => {
+  const session = await getServerSession(options)
+
   return (
     <div className="shadow-sm border-b sticky top-0 bg-white z-30">
       <div className="flex items-center justify-between max-w-6xl mx-4 xl:mx-auto">
@@ -38,16 +43,7 @@ const Header = () => {
         </div>
 
         {/* Right */}
-        <div className="flex space-x-4 items-center">
-          <HomeIcon className="hidden md:inline-flex h-6 cursor-pointer hover:scale-125 transition-transform duration-200 ease-out" />
-          <PlusCircleIcon className="h-6 cursor-pointer hover:scale-125 transition-transform duration-200 ease-out" />
-          {/*eslint-disable-next-line @next/next/no-img-element*/}
-          <img
-            src="https://static.skillshare.com/uploads/users/350301760/user-image-large.jpg?753816048"
-            alt="user-image"
-            className="h-10 rounded-full cursor-pointer"
-          />
-        </div>
+        <HeaderRight session={session} />
       </div>
     </div>
   )
