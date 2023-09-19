@@ -2,12 +2,13 @@
 import { HomeIcon } from '@heroicons/react/20/solid'
 import { PlusCircleIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
-import type { Session } from 'next-auth'
 import { signOut } from 'next-auth/react'
 import React from 'react'
 
+import type { SessionUser } from '@/types/SessionUser'
+
 type HeaderRightProps = {
-  session: Session | null
+  session?: SessionUser | null
 }
 
 const HeaderRight: React.FC<HeaderRightProps> = ({ session }) => {
