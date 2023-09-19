@@ -33,6 +33,7 @@ const SignUpPage = () => {
       })
 
       router.push('/')
+      router.refresh()
     } catch (err) {
       console.log(err)
     }

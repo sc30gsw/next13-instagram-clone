@@ -55,6 +55,7 @@ const SignInPage = () => {
       }
 
       router.push('/')
+      router.refresh()
     } catch (err) {
       console.log(err)
     }
@@ -145,6 +146,7 @@ const SignInPage = () => {
             </Link>
           </div>
           <button
+            type="button"
             onClick={() => signIn('google', { callbackUrl: '/' })}
             className="bg-red-400 rounded-lg p-3 text-white hover:bg-red-500"
           >
