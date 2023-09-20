@@ -2,18 +2,21 @@ import {
   BookmarkIcon,
   ChatBubbleOvalLeftIcon,
   EllipsisHorizontalIcon,
-  FaceSmileIcon,
   HeartIcon,
 } from '@heroicons/react/24/outline'
+import { getServerSession } from 'next-auth'
 import React from 'react'
 
+import PostInputBox from '@/components/PostInputBox'
+import options from '@/libs/options'
 import { Post } from '@/types/Post'
 
 type PostProps = {
   post: Post
 }
 
-const Post: React.FC<PostProps> = ({ post }) => {
+const Post: React.FC<PostProps> = async ({ post }) => {
+  const session = await getServerSession(options)
   return (
     <div className="bg-white my-7 border rounded-md">
       {/* PostHeader */}
@@ -36,13 +39,15 @@ const Post: React.FC<PostProps> = ({ post }) => {
       />
 
       {/* PostButtons */}
-      <div className="flex justify-between px-4 pt-4">
-        <div className="flex space-x-4">
-          <HeartIcon className="btn" />
-          <ChatBubbleOvalLeftIcon className="btn" />
+      {session && (
+        <div className="flex justify-between px-4 pt-4">
+          <div className="flex space-x-4">
+            <HeartIcon className="btn" />
+            <ChatBubbleOvalLeftIcon className="btn" />
+          </div>
+          <BookmarkIcon className="btn" />
         </div>
-        <BookmarkIcon className="btn" />
-      </div>
+      )}
 
       {/* PostComments */}
       <p className="p-5 truncate">
@@ -51,15 +56,7 @@ const Post: React.FC<PostProps> = ({ post }) => {
       </p>
 
       {/* PostInputBox */}
-      <form className="flex items-center p-4">
-        <FaceSmileIcon className="h-7" />
-        <input
-          className="border-none flex-1 focus:ring-0"
-          type="text"
-          placeholder="Enter your comment..."
-        />
-        <button className="text-blue-400 font-bold">Post</button>
-      </form>
+      {session && <PostInputBox />}
     </div>
   )
 }
