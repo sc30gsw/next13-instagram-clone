@@ -21,15 +21,19 @@ const Post: React.FC<PostProps> = ({ post }) => {
         {/*eslint-disable-next-line @next/next/no-img-element*/}
         <img
           className="h-12 rounded-full object-cover border p-1 mr-3"
-          src={post.userImg}
-          alt={post.username}
+          src={post.user.image ? post.user.image : '/images/noAvatar.png'}
+          alt={post.user.name}
         />
-        <p className="font-bold flex-1">{post.username}</p>
+        <p className="font-bold flex-1">{post.user.name}</p>
         <EllipsisHorizontalIcon className="h-5" />
       </div>
       {/* PostImage */}
       {/*eslint-disable-next-line @next/next/no-img-element*/}
-      <img className="object-cover w-full" src={post.img} alt={post.caption} />
+      <img
+        className="object-cover w-full"
+        src={post.image}
+        alt={post.caption}
+      />
 
       {/* PostButtons */}
       <div className="flex justify-between px-4 pt-4">
@@ -42,7 +46,7 @@ const Post: React.FC<PostProps> = ({ post }) => {
 
       {/* PostComments */}
       <p className="p-5 truncate">
-        <span className="font-bold mr-2">{post.username}</span>
+        <span className="font-bold mr-2">{post.user.name}</span>
         {post.caption}
       </p>
 

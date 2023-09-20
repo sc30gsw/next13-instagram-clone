@@ -1,7 +1,14 @@
+import type { User } from '@prisma/client'
+
 export type Post = {
   id: string
-  username: string
-  userImg: string
-  img: string
   caption: string
+  image: string
+  createdAt: string
+  updatedAt: string
+  userId: string
+  user: {
+    name: string
+    image: string
+  }
 }
