@@ -11,8 +11,6 @@ import type { SignInForm } from '@/types/SignInInput'
 import { schema } from '@/types/SignInInput'
 
 const SignInPage = () => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
   const router = useRouter()
 
   const {
@@ -23,44 +21,47 @@ const SignInPage = () => {
     setError,
   } = useForm<SignInForm>({ resolver: zodResolver(schema) })
 
-  const login = useCallback(async () => {
-    try {
-      const result = await signIn('credentials', {
-        email,
-        password,
-        redirect: false,
-        callbackUrl: '/',
-      })
+  const login = useCallback(
+    async (email: string, password: string) => {
+      try {
+        const result = await signIn('credentials', {
+          email,
+          password,
+          redirect: false,
+          callbackUrl: '/',
+        })
 
-      // next-authのsignInのエラーメッセージ(authorize関数)
-      if (result?.error) {
-        switch (result.error) {
-          case 'Email does not exists':
-            setError('email', {
-              type: 'manual',
-              message: 'Email does not exist.',
-            })
-            break
+        // next-authのsignInのエラーメッセージ(authorize関数)
+        if (result?.error) {
+          switch (result.error) {
+            case 'Email does not exists':
+              setError('email', {
+                type: 'manual',
+                message: 'Email does not exist.',
+              })
+              break
 
-          case 'Incorrect password':
-            setError('password', {
-              type: 'manual',
-              message: 'Incorrect password.',
-            })
-            break
+            case 'Incorrect password':
+              setError('password', {
+                type: 'manual',
+                message: 'Incorrect password.',
+              })
+              break
+          }
+          redirect('/auth/signin')
         }
-        redirect('/auth/signin')
-      }
 
-      router.push('/')
-      router.refresh()
-    } catch (err) {
-      console.log(err)
-    }
-  }, [email, password, router, setError])
+        router.push('/')
+        router.refresh()
+      } catch (err) {
+        console.log(err)
+      }
+    },
+    [router, setError],
+  )
 
   const onSubmit = (data: SignInForm) => {
-    login()
+    login(data.email, data.password)
     reset()
   }
 
@@ -92,10 +93,7 @@ const SignInPage = () => {
           <div className="relative">
             <input
               {...register('email')}
-              id="email"
-              onChange={(e) => setEmail(e.target.value)}
-              value={email}
-              type="text"
+              type="email"
               className="block rounded-md px-6 pt-6 pb-1 w-full text-md  appearance-none focus:outline-none focus:ring-0 peer"
               placeholder="  "
             />
@@ -112,9 +110,6 @@ const SignInPage = () => {
           <div className="relative">
             <input
               {...register('password')}
-              id="password"
-              onChange={(e) => setPassword(e.target.value)}
-              value={password}
               type="password"
               className="block rounded-md px-6 pt-6 pb-1 w-full text-md  appearance-none focus:outline-none focus:ring-0 peer"
               placeholder="  "

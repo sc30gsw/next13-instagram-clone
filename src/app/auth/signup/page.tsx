@@ -12,9 +12,6 @@ import type { SignUpForm } from '@/types/SingUpInput'
 import { schema } from '@/types/SingUpInput'
 
 const SignUpPage = () => {
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
   const router = useRouter()
 
   const {
@@ -24,38 +21,44 @@ const SignUpPage = () => {
     formState: { errors },
   } = useForm<SignUpForm>({ resolver: zodResolver(schema) })
 
-  const login = useCallback(async () => {
-    try {
-      await signIn('credentials', {
-        email,
-        password,
-        redirect: false,
-        callbackUrl: '/',
-      })
+  const login = useCallback(
+    async (email: string, password: string) => {
+      try {
+        await signIn('credentials', {
+          email,
+          password,
+          redirect: false,
+          callbackUrl: '/',
+        })
 
-      router.push('/')
-      router.refresh()
-    } catch (err) {
-      console.log(err)
-    }
-  }, [email, password, router])
+        router.push('/')
+        router.refresh()
+      } catch (err) {
+        console.log(err)
+      }
+    },
+    [router],
+  )
 
-  const signUp = useCallback(async () => {
-    try {
-      await fetch('/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, password }),
-      })
+  const signUp = useCallback(
+    async (name: string, email: string, password: string) => {
+      try {
+        await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, password }),
+        })
 
-      login()
-    } catch (err) {
-      console.log(err)
-    }
-  }, [name, email, password, login])
+        login(email, password)
+      } catch (err) {
+        console.log(err)
+      }
+    },
+    [login],
+  )
 
   const onSubmit = (data: SignUpForm) => {
-    signUp()
+    signUp(data.name, data.email, data.password)
     reset()
   }
 
@@ -90,9 +93,6 @@ const SignUpPage = () => {
           <div className="relative">
             <input
               {...register('name')}
-              id="name"
-              onChange={(e) => setName(e.target.value)}
-              value={name}
               type="text"
               className="block rounded-md px-6 pt-6 pb-1 w-full text-md appearance-none focus:outline-none focus:ring-0 peer"
               placeholder="  "
@@ -110,10 +110,7 @@ const SignUpPage = () => {
           <div className="relative">
             <input
               {...register('email')}
-              id="email"
-              onChange={(e) => setEmail(e.target.value)}
-              value={email}
-              type="text"
+              type="email"
               className="block rounded-md px-6 pt-6 pb-1 w-full text-md  appearance-none focus:outline-none focus:ring-0 peer"
               placeholder="  "
             />
@@ -130,9 +127,6 @@ const SignUpPage = () => {
           <div className="relative">
             <input
               {...register('password')}
-              id="password"
-              onChange={(e) => setPassword(e.target.value)}
-              value={password}
               type="password"
               className="block rounded-md px-6 pt-6 pb-1 w-full text-md  appearance-none focus:outline-none focus:ring-0 peer"
               placeholder="  "
