@@ -1,13 +1,18 @@
-import { MagnifyingGlassIcon } from '@heroicons/react/20/solid'
+'use client'
+
+import { HomeIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid'
+import { PlusCircleIcon } from '@heroicons/react/24/outline'
 import Image from 'next/image'
-import { getServerSession } from 'next-auth'
-import React, { Suspense } from 'react'
+import Link from 'next/link'
+import { signOut, useSession } from 'next-auth/react'
+import React from 'react'
+import { useRecoilState } from 'recoil'
 
-import HeaderRight from '@/components/HeaderRight'
-import options from '@/libs/options'
+import { modalState } from '@/atom/modalAtom'
 
-const Header = async () => {
-  const session = await getServerSession(options)
+const Header = () => {
+  const { data: session } = useSession()
+  const [open, setOpen] = useRecoilState(modalState)
 
   return (
     <div className="shadow-sm border-b sticky top-0 bg-white z-30">
@@ -43,7 +48,30 @@ const Header = async () => {
         </div>
 
         {/* Right */}
-        <HeaderRight session={session} />
+        <div className="flex space-x-4 items-center">
+          <HomeIcon className="hidden md:inline-flex h-6 cursor-pointer hover:scale-125 transition-transform duration-200 ease-out" />
+          {session ? (
+            <>
+              <PlusCircleIcon
+                onClick={() => setOpen(true)}
+                className="h-6 cursor-pointer hover:scale-125 transition-transform duration-200 ease-out"
+              />
+              {/*eslint-disable-next-line @next/next/no-img-element*/}
+              <img
+                onClick={() => signOut()}
+                src={
+                  session.user?.image
+                    ? (session.user.image as string)
+                    : '/images/noAvatar.png'
+                }
+                alt={session.user?.name as string}
+                className="h-10 rounded-full cursor-pointer"
+              />
+            </>
+          ) : (
+            <Link href="/auth/signin">Sign in</Link>
+          )}
+        </div>
       </div>
     </div>
   )
