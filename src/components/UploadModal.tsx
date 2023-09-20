@@ -1,36 +1,75 @@
 'use client'
 
 import { CameraIcon, XCircleIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { redirect, useRouter } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 import React, { useCallback, useRef, useState } from 'react'
+import { useForm } from 'react-hook-form'
 import Modal from 'react-modal'
 import { useRecoilState } from 'recoil'
 
 import { modalState } from '@/atom/modalAtom'
+import type { PostInput } from '@/types/PostInput'
+import { schema } from '@/types/PostInput'
 
 const UploadModal = () => {
+  const { data: session } = useSession()
+
   const [open, setOpen] = useRecoilState(modalState)
   const [selectedFile, setSelectedFile] = useState<
     string | ArrayBuffer | null | undefined
   >(null)
+
+  const router = useRouter()
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    formState: { errors },
+  } = useForm<PostInput>({ resolver: zodResolver(schema) })
 
   const filePickerRef = useRef<HTMLInputElement | null>(null)
 
   const addImageToPost = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const reader = new FileReader()
-      if (e.target.files && e.target.files.length > 0)
+      if (e.target.files && e.target.files.length > 0) {
         reader.readAsDataURL(e.target.files[0])
+        setValue('file', e.target.files[0])
+      }
 
       reader.onload = (readerEvent) =>
         setSelectedFile(readerEvent.target?.result)
     },
-    [],
+    [setValue],
   )
 
-  const closeModal = useCallback(() => {
+  const closeModal = () => {
     setOpen(false)
     setSelectedFile(null)
-  }, [setOpen])
+    reset()
+  }
+
+  const onSubmit = async (data: PostInput) => {
+    if (!session) redirect('/auth/signin')
+
+    try {
+      await fetch('/api/post', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ caption: data.caption, image: selectedFile }),
+      })
+
+      router.refresh()
+    } catch (err) {
+      console.log(err)
+    } finally {
+      closeModal()
+    }
+  }
 
   Modal.setAppElement('#modal')
   return (
@@ -47,12 +86,18 @@ const UploadModal = () => {
               className="cursor-pointer h-7 text-gray-400 hover:text-gray-600"
             />
           </div>
-          <div className="flex flex-col justify-center items-center h-full">
+          <form
+            className="flex flex-col justify-center items-center h-full"
+            onSubmit={handleSubmit(onSubmit)}
+          >
             {selectedFile ? (
               <div className="w-full h-full relative">
                 <div className="absolute top-2 right-2">
                   <XCircleIcon
-                    onClick={() => setSelectedFile(null)}
+                    onClick={() => {
+                      setSelectedFile(null)
+                      reset()
+                    }}
                     className="cursor-pointer h-10 text-gray-800 hover:brightness-200"
                   />
                 </div>
@@ -71,24 +116,32 @@ const UploadModal = () => {
             )}
 
             <input
+              {...register('file')}
               type="file"
               hidden
               ref={filePickerRef}
               onChange={addImageToPost}
             />
+            {errors.file && (
+              <span className="text-red-500">{errors.file.message}</span>
+            )}
             <input
+              {...register('caption')}
               type="text"
               maxLength={150}
               placeholder="Please enter your caption..."
               className="m-4 border-none text-center w-full focus:ring-0"
             />
+            {errors.caption && (
+              <span className="text-red-500">{errors.caption.message}</span>
+            )}
             <button
-              disabled
-              className="w-full bg-red-600 text-white p-2 shadow-md hover:brightness-125 disabled:bg-gray-200 disabled:cursor-not-allowed disabled:hover:brightness-100"
+              type="submit"
+              className="w-full bg-red-600 text-white p-2 shadow-md hover:brightness-125"
             >
               Upload Post
             </button>
-          </div>
+          </form>
         </Modal>
       )}
     </div>
