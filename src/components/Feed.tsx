@@ -1,5 +1,5 @@
 import { getServerSession } from 'next-auth'
-import React from 'react'
+import React, { Suspense } from 'react'
 
 import MiniProfile from '@/components/MiniProfile'
 import Posts from '@/components/Posts'
