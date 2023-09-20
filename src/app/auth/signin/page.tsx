@@ -3,12 +3,10 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import Image from 'next/image'
 import Link from 'next/link'
 import { redirect, useRouter } from 'next/navigation'
-import { getServerSession } from 'next-auth'
 import { signIn } from 'next-auth/react'
 import React, { useCallback, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
-import options from '@/libs/options'
 import type { SignInForm } from '@/types/SignInInput'
 import { schema } from '@/types/SignInInput'
 

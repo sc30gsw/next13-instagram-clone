@@ -8,7 +8,8 @@ import { signIn } from 'next-auth/react'
 import React, { useCallback, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
-import { schema, type SignUpForm } from '@/types/SingUpInput'
+import type { SignUpForm } from '@/types/SingUpInput'
+import { schema } from '@/types/SingUpInput'
 
 const SignUpPage = () => {
   const [name, setName] = useState('')
