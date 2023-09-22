@@ -3,6 +3,10 @@ import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 
+import Header from '@/components/Header'
+import Provider from '@/components/Provider'
+import UploadModal from '@/components/UploadModal'
+
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
@@ -17,7 +21,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ja">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <Provider>
+          <Header />
+          <UploadModal />
+        </Provider>
+        {children}
+      </body>
     </html>
   )
 }
