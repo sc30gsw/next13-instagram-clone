@@ -14,7 +14,7 @@ const fetchPosts = async () => {
 
     return posts
   } catch (err) {
-    console.log(err)
+    throw new Error('Failed to fetch posts')
   }
 }
 
