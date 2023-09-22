@@ -4,7 +4,7 @@ import { CameraIcon, XCircleIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { redirect, useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
-import React, { useCallback, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import Modal from 'react-modal'
 import { useRecoilState } from 'recoil'
@@ -22,6 +22,8 @@ const UploadModal = () => {
   >(null)
 
   const router = useRouter()
+
+  useEffect(() => Modal.setAppElement('#modal'), [])
 
   const {
     register,
@@ -71,7 +73,6 @@ const UploadModal = () => {
     }
   }
 
-  Modal.setAppElement('#modal')
   return (
     <div id="modal">
       {open && (
