@@ -74,20 +74,19 @@ const Post: React.FC<PostProps> = async ({ post }) => {
       {/* PostButtons */}
       {session ? (
         <Provider>
-          <PostButton px="px-4" post={post} />
-          <div className="p-5 truncate">
-            {likeCount > 0 && (
-              <p className="font-bold mb-1">{likeCount} likes</p>
-            )}
-            <span className="font-bold mr-2">{post.user.name}</span>
-            {post.caption}
-          </div>
+          <PostButton
+            px="px-4"
+            post={post}
+            isModal={false}
+            likeCount={likeCount}
+          />
           {comments.length > 0 && (
             <Comments
               session={session}
               post={post}
               comments={comments}
               commentCount={commentCount}
+              likeCount={likeCount}
             />
           )}
         </Provider>
@@ -103,6 +102,7 @@ const Post: React.FC<PostProps> = async ({ post }) => {
               post={post}
               comments={comments}
               commentCount={commentCount}
+              likeCount={likeCount}
             />
           )}
         </Provider>

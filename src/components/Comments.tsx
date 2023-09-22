@@ -4,7 +4,6 @@ import { EllipsisHorizontalIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import Modal from '@mui/material/Modal'
 import { formatDistanceToNow } from 'date-fns'
 import { enUS } from 'date-fns/locale'
-import { useRouter } from 'next/navigation'
 import type { Session } from 'next-auth'
 import React from 'react'
 import { useRecoilState } from 'recoil'
@@ -20,6 +19,7 @@ type CommentsProps = {
   post: Post
   comments: Comment[]
   commentCount: number
+  likeCount: number
 }
 
 const Comments: React.FC<CommentsProps> = ({
@@ -27,25 +27,22 @@ const Comments: React.FC<CommentsProps> = ({
   post,
   comments,
   commentCount,
+  likeCount,
 }) => {
   const [open, setOpen] = useRecoilState(commentModalState)
-  const router = useRouter()
 
-  const closeModal = () => {
-    setOpen(false)
-    router.refresh()
-  }
+  const closeModal = () => setOpen(false)
 
   return (
     <div>
-      {/* {session && ( */}
-      <p
-        onClick={() => setOpen(true)}
-        className="text-gray-500 ml-5 cursor-pointer"
-      >
-        View all {commentCount} comments
-      </p>
-      {/* )} */}
+      {session && (
+        <p
+          onClick={() => setOpen(true)}
+          className="text-gray-500 ml-5 cursor-pointer"
+        >
+          View all {commentCount} comments
+        </p>
+      )}
 
       <Modal open={open} onClose={closeModal}>
         <div className="max-w-lg w-[90%] p-6 absolute top-[20%] left-[50%] translate-x-[-50%] bg-white border-2 rounded-md shadow-md">
@@ -92,12 +89,8 @@ const Comments: React.FC<CommentsProps> = ({
               </div>
             ))}
           </div>
-          {session && (
-            <>
-              <PostButton post={post} />
-              <PostInputBox postId={post.id} isModal={true} />
-            </>
-          )}
+          <PostButton post={post} isModal={true} likeCount={likeCount} />
+          <PostInputBox postId={post.id} isModal={true} />
         </div>
       </Modal>
     </div>

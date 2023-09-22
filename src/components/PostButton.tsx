@@ -19,9 +19,16 @@ import type { Post } from '@/types/Post'
 type PostButtonProps = {
   px?: string
   post: Post
+  isModal: boolean
+  likeCount: number
 }
 
-const PostButton: React.FC<PostButtonProps> = ({ px, post }) => {
+const PostButton: React.FC<PostButtonProps> = ({
+  px,
+  post,
+  isModal,
+  likeCount,
+}) => {
   const [open, setOpen] = useRecoilState(commentModalState)
   const [likes, setLikes] = useState<Like[]>([])
   const router = useRouter()
@@ -44,7 +51,7 @@ const PostButton: React.FC<PostButtonProps> = ({ px, post }) => {
     }
 
     fetchAlreadyLiked()
-  }, [post.id])
+  }, [post.id, open])
 
   const handleLike = useCallback(async () => {
     try {
@@ -106,7 +113,7 @@ const PostButton: React.FC<PostButtonProps> = ({ px, post }) => {
         </div>
         <BookmarkIcon className="btn" />
       </div>
-      {open && (
+      {isModal && (
         <p className="mt-4 text-sm text-gray-500 border-b mb-2 pb-3">
           {formatDistanceToNow(new Date(post.updatedAt), {
             addSuffix: true,
@@ -114,6 +121,11 @@ const PostButton: React.FC<PostButtonProps> = ({ px, post }) => {
           })}
         </p>
       )}
+      <div className="p-5 truncate">
+        {likeCount > 0 && <p className="font-bold mb-1">{likeCount} likes</p>}
+        <span className="font-bold mr-2">{post.user.name}</span>
+        {post.caption}
+      </div>
     </>
   )
 }
