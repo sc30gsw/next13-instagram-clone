@@ -6,7 +6,6 @@ import { useRouter } from 'next/navigation'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 
-import type { Comment } from '@/types/Comment'
 import type { CommentInput } from '@/types/CommentInput'
 import { schema } from '@/types/CommentInput'
 
