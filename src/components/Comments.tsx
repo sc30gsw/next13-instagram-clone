@@ -33,12 +33,14 @@ const Comments: React.FC<CommentsProps> = ({
 
   return (
     <div id="commentModal">
-      <p
-        onClick={() => setOpen(true)}
-        className="text-gray-500 ml-5 cursor-pointer"
-      >
-        View all {commentCount} comments
-      </p>
+      {session && (
+        <p
+          onClick={() => setOpen(true)}
+          className="text-gray-500 ml-5 cursor-pointer"
+        >
+          View all {commentCount} comments
+        </p>
+      )}
 
       <Modal open={open} onClose={closeModal}>
         <div className="max-w-lg w-[90%] p-6 absolute top-[50%] left-[50%] translate-x-[-50%] bg-white border-2 rounded-md shadow-md">
