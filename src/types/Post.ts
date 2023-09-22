@@ -1,5 +1,3 @@
-import type { User } from '@prisma/client'
-
 export type Post = {
   id: string
   caption: string
