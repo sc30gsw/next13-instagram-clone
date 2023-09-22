@@ -26,6 +26,21 @@ const fetchComments = async (postId: string) => {
   }
 }
 
+const fetchLikeCount = async (postId: string) => {
+  try {
+    const response = await fetch(
+      `${process.env.API_BASE_URL}/api/like/${postId}`,
+      { cache: 'no-store' },
+    )
+
+    const res: { likeCount: number } = await response.json()
+
+    return { likeCount: res.likeCount }
+  } catch (err) {
+    throw new Error('Failed to fetch comments for post')
+  }
+}
+
 type PostProps = {
   post: Post
 }
@@ -33,6 +48,7 @@ type PostProps = {
 const Post: React.FC<PostProps> = async ({ post }) => {
   const session = await getServerSession(options)
   const { comments, commentCount } = await fetchComments(post.id)
+  const { likeCount } = await fetchLikeCount(post.id)
 
   return (
     <div className="bg-white my-7 border rounded-md">
@@ -59,10 +75,13 @@ const Post: React.FC<PostProps> = async ({ post }) => {
       {session ? (
         <Provider>
           <PostButton px="px-4" post={post} />
-          <p className="p-5 truncate">
+          <div className="p-5 truncate">
+            {likeCount > 0 && (
+              <p className="font-bold mb-1">{likeCount} likes</p>
+            )}
             <span className="font-bold mr-2">{post.user.name}</span>
             {post.caption}
-          </p>
+          </div>
           {comments.length > 0 && (
             <Comments
               session={session}
