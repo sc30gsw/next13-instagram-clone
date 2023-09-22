@@ -56,7 +56,7 @@ const Post: React.FC<PostProps> = async ({ post }) => {
       </p>
 
       {/* PostInputBox */}
-      {session && <PostInputBox />}
+      {session && <PostInputBox postId={post.id} />}
     </div>
   )
 }
