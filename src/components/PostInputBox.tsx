@@ -6,14 +6,16 @@ import { useRouter } from 'next/navigation'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 
+import type { Comment } from '@/types/Comment'
 import type { CommentInput } from '@/types/CommentInput'
 import { schema } from '@/types/CommentInput'
 
 type PostInputBoxProps = {
   postId: string
+  isModal: boolean
 }
 
-const PostInputBox: React.FC<PostInputBoxProps> = ({ postId }) => {
+const PostInputBox: React.FC<PostInputBoxProps> = ({ postId, isModal }) => {
   const { register, handleSubmit, reset, watch } = useForm<CommentInput>({
     resolver: zodResolver(schema),
   })
@@ -40,7 +42,10 @@ const PostInputBox: React.FC<PostInputBoxProps> = ({ postId }) => {
   }
 
   return (
-    <form className="flex items-center p-4" onSubmit={handleSubmit(onSubmit)}>
+    <form
+      className={`flex items-center ${isModal || 'p-4'}`}
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <FaceSmileIcon className="h-7" />
       <div className="flex-1">
         <input
