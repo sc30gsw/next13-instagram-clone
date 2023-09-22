@@ -57,10 +57,8 @@ const SignUpPage = () => {
     [login],
   )
 
-  const onSubmit = (data: SignUpForm) => {
+  const onSubmit = (data: SignUpForm) =>
     signUp(data.name, data.email, data.password)
-    reset()
-  }
 
   return (
     <div className="lg:py-10">

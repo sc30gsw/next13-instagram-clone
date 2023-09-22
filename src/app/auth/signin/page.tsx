@@ -60,10 +60,7 @@ const SignInPage = () => {
     [router, setError],
   )
 
-  const onSubmit = (data: SignInForm) => {
-    login(data.email, data.password)
-    reset()
-  }
+  const onSubmit = (data: SignInForm) => login(data.email, data.password)
 
   return (
     <div className="lg:py-10">

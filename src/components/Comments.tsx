@@ -32,7 +32,7 @@ const Comments: React.FC<CommentsProps> = ({
   const closeModal = () => setOpen(false)
 
   return (
-    <div id="commentModal">
+    <div>
       {session && (
         <p
           onClick={() => setOpen(true)}

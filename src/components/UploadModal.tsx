@@ -72,7 +72,7 @@ const UploadModal = () => {
   }
 
   return (
-    <div id="modal">
+    <div>
       {open && (
         <Modal open={open} onClose={closeModal}>
           <div className="max-w-lg w-[90%] p-6 absolute top-56 left-[50%] translate-x-[-50%] bg-white border-2 rounded-md shadow-md">
